@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from datetime import date
+from datetime import date, datetime
 
 class User(BaseModel):
     username: str
@@ -8,8 +8,8 @@ class User(BaseModel):
     phone: str
     birthday: date
     age: int
-    # password: str
-    # confirm_password: str
-    # created_at: str
+    password: str
+    confirm_password: str
+    created_at: date
 
     
