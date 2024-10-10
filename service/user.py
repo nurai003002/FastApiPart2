@@ -59,6 +59,8 @@ def update(data: user.User, db: Session, id: int):
     phone_pattern = r'^\+996 \d{3} \d{2} \d{2} \d{2}$'
     if not re.match(phone_pattern, data.phone):
         raise HTTPException(status_code=500, detail='Номер телефона должен быть в формате +996 XXX XX XX XX')
+    if data.age <= 0:
+        raise HTTPException(status_code=500, detail='Возраст не должен быть меньше 0')
     
     phone_validator = db.query(User).filter(User.phone == data.phone).first()
     
@@ -80,6 +82,8 @@ def update(data: user.User, db: Session, id: int):
     
     if phone_validator:
         raise HTTPException(status_code=500, detail='Номер телефона уже используется')
+    
+    
     user.username = data.username
     first_name=data.first_name
     last_name=data.last_name
@@ -88,7 +92,6 @@ def update(data: user.User, db: Session, id: int):
     password=data.password
     confirm_password=data.confirm_password
     age=data.age
-    created_at=data.created_at
     db.add(user)
     db.commit()
     db.refresh(user)
